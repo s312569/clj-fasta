@@ -4,6 +4,18 @@ Parser for sequences in FASTA format.
 
 ## Usage
 
+Import from clojars:
+
+```clojure
+[clj-fasta "0.1.0"]
+```
+
+Import into namespace:
+
+```clojure
+(:require [clj-fasta :refer [fasta-seq]])
+```
+
 Takes a buffered reader and returns a lazy list of hashmaps containing
 the accession, description and sequence of the fasta sequences on the
 reader. Regular expressions to parse the accession and description
