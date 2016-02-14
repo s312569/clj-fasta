@@ -1,5 +1,6 @@
 (ns clj-fasta.core
-  (:require [clojure.string :refer [trim]]))
+  (:require [clojure.string :refer [trim replace]]
+            [clojure.java.io :refer [writer]]))
 
 (defn- parse-info
   [re line]
@@ -26,6 +27,8 @@
        :remaining (drop-while not-first->? (rest rem))}
       {:end true})))
 
+;; api
+
 (defn fasta-seq
   "Takes a buffered reader and returns a lazy list of hashmaps
   containing the accession, description and sequence of the fasta
@@ -42,3 +45,25 @@
          (take-while #(not (contains? % :end)))
          (map :yield)
          (filter #(not (nil? %))))))
+
+(defn fasta-string
+  "Takes a fasta sequence and returns a string in fasta format."
+  [s]
+  (str ">" (:accession s) " " (:description s) \newline
+       (->> (partition-all 70 (:sequence s))
+            (map #(apply str %))
+            (interpose \newline)
+            (apply str))))
+
+(defn fasta->file
+  "Takes a collection of fasta sequences and writes them to the
+  specified file. Sequences can be appended to the file using
+  the :append keyword and can be transformed prior to writing using
+  the :func keyword."
+  [col file & {:keys [append func] :or {append false func fasta-string}}]
+  (with-open [w (writer file :append append)]
+    (dorun (map #(let [n (func %)]
+                   (if n
+                     (.write w (str n "\n"))))
+                col)))
+  file)
