@@ -1,4 +1,4 @@
-(defproject clj-fasta "0.1.2"
+(defproject clj-fasta "0.1.3"
   :description "Parser for sequences in FASTA format."
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

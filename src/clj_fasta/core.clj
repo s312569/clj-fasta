@@ -39,7 +39,7 @@
   that starts with '>'."
   [reader & {:keys [acc-parse desc-parse]
              :or {acc-parse #"^>([^\s]+)" desc-parse #">[^\s]+\s+(.+)"}}]
-  (let [lines (filter #(not (= "" (str/trim %))) (line-seq reader))]
+  (let [lines (filter #(not (= "" (trim %))) (line-seq reader))]
     (->> {:remaining lines}
          (iterate #(tokenise % acc-parse desc-parse))
          (take-while #(not (contains? % :end)))
