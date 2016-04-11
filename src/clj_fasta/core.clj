@@ -67,3 +67,11 @@
                      (.write w (str n "\n"))))
                 col)))
   file)
+
+(defn fasta-db-spec
+  "Returns a collection of vectors that can be used as a spec for
+  creating tables using jdbc or biodb."
+  []
+  (list [:accession :text "PRIMARY KEY"]
+        [:description :text]
+        [:sequence :text]))
