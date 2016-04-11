@@ -1,6 +1,7 @@
 (ns clj-fasta.core
   (:require [clojure.string :refer [trim]]
-            [clojure.java.io :refer [writer]]))
+            [clojure.java.io :refer [writer]]
+            [biodb.core :as bdb]))
 
 (defn- parse-info
   [re line]
@@ -27,7 +28,9 @@
        :remaining (drop-while not-first->? (rest rem))}
       {:end true})))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; api
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn fasta-seq
   "Takes a buffered reader and returns a lazy list of hashmaps
@@ -68,10 +71,21 @@
                 col)))
   file)
 
-(defn fasta-db-spec
-  "Returns a collection of vectors that can be used as a spec for
-  creating tables using jdbc or biodb."
-  []
-  (list [:accession :text "PRIMARY KEY"]
-        [:description :text]
-        [:sequence :text]))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; integration with biodb
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod bdb/table-spec :fasta
+  [q]
+  (vector [:accession :text "PRIMARY KEY"]
+          [:description :text]
+          [:sequence :text]))
+
+(defmethod bdb/prep-sequences :fasta
+  [q]
+  (:coll q))
+
+(defmethod bdb/restore-sequence :fasta
+  [q]
+  (dissoc q :type))
+
