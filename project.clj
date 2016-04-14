@@ -1,4 +1,4 @@
-(defproject clj-fasta "0.1.6"
+(defproject clj-fasta "0.1.7"
   :description "Parser for sequences in FASTA format."
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -6,6 +6,6 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [fs "1.3.3"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [biodb "0.1.1"]]
+                 [biodb "0.1.3"]]
   :repl-options {:init (set! *print-length* 100)}
   :jvm-opts ["-Xmx1000M"])
