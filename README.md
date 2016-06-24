@@ -26,13 +26,28 @@ space). Ignores all lines prior to the first line that starts with
 
 ```clojure
 user> (with-open [r (reader "/fasta/file.fa")]
-                   (->> (fasta-seq r)
-                        first))
+        (->> (fasta-seq r)
+             first))
 {:accession "TRINITY_DN22_c0_g1_i1", :description 
  "len=206 path=[638:0-65 639:66-66 640:67-205] [-1, 638, 639, 640, -2]",
  :sequence "GCGAGGA..."}
 user>
 ```
+
+A collection of fasta sequences can be sent to file using
+fasta->file. This function also takes the :append and :func keyword
+for appending to a file and transforming the sequence before
+writing. For example:
+
+```clojure
+user> (with-open [r (reader "/fasta/file.fa")]
+        (fasta->file (fasta-seq r)
+                     "outfile"
+                     :append true
+		     :func #(update-in % [:sequence] clojure.string/lower-case)))
+"outfile"		     
+user>
+```	     
 
 ## License
 
