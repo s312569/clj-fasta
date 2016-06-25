@@ -7,13 +7,13 @@ Parser for sequences in FASTA format.
 Import from clojars:
 
 ```clojure
-[clj-fasta.core "0.1.7"]
+[clj-fasta "0.1.7"]
 ```
 
 Import into namespace:
 
 ```clojure
-(:require [clj-fasta :as fa])
+(:require [clj-fasta.core :as fa])
 ```
 
 Takes a buffered reader and returns a lazy list of hashmaps containing
