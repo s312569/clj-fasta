@@ -43,7 +43,8 @@
   that starts with '>'. If using in ClojureScript, the 'reader'
   argument is a string and is not lazy."
   [reader & {:keys [acc-parse desc-parse]
-             :or {acc-parse #"^>([^\s]+)" desc-parse #">[^\s]+\s+(.+)"}}]
+             :or {acc-parse (re-pattern "^>([^\s]+)")
+                  desc-parse (re-pattern ">[^\s]+\s+(.+)")}}]
   (let [lines (filter #(not (= "" (trim %))) #?(:clj (line-seq reader)
                                                 :cljs (split-lines reader)))]
     (->> {:remaining lines}
