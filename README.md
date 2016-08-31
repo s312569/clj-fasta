@@ -7,7 +7,7 @@ Parser for sequences in FASTA format.
 Import from clojars:
 
 ```clojure
-[clj-fasta "0.1.7"]
+[clj-fasta "0.1.8"]
 ```
 
 Import into namespace:
@@ -47,7 +47,11 @@ user> (with-open [r (reader "/fasta/file.fa")]
 		     :func #(update-in % [:sequence] clojure.string/lower-case)))
 "outfile"		     
 user>
-```	     
+```
+
+Library also works in ClojureScript although there is no fasta->file
+function or integration with biodb. The fasta-seq function takes a
+string as its argument and is not lazy.
 
 ## License
 
