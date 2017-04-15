@@ -7,7 +7,7 @@ Parser for sequences in FASTA format.
 Import from clojars:
 
 ```clojure
-[clj-fasta "0.2.2"]
+[clj-fasta "0.2.3"]
 ```
 
 Import into namespace:

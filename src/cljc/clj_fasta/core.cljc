@@ -33,6 +33,12 @@
 ;; api
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defmulti fasta-line-seq (fn [r] (class r)))
+
+(defmethod fasta-line-seq :default
+  [r]
+  (line-seq r))
+
 (defn fasta-seq
   "Takes a buffered reader and returns a lazy list of hashmaps
   containing the accession, description and sequence of the fasta
@@ -45,7 +51,7 @@
   [reader & {:keys [acc-parse desc-parse]
              :or {acc-parse #"^>([^\s]+)"
                   desc-parse #">[^\s]+\s+(.+)"}}]
-  (let [lines (filter #(not (= "" (trim %))) #?(:clj (line-seq reader)
+  (let [lines (filter #(not (= "" (trim %))) #?(:clj (fasta-line-seq reader)
                                                 :cljs (split-lines reader)))]
     (->> {:remaining lines}
          (iterate #(tokenise % acc-parse desc-parse))
